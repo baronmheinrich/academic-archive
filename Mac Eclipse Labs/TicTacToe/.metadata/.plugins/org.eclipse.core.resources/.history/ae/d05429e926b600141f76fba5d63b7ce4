@@ -1,0 +1,31 @@
+package tictactoe;
+
+import static org.junit.Assert.*;
+import tictactoe.*;
+import org.junit.BeforeClass;
+import org.junit.Before;
+import org.junit.Test;
+
+public class TicTacToeBoardTests_Heinrich 
+{
+
+//	private TicTacToeBoard b1;
+	TicTacToeBoard b1 = new TicTacToeBoardImpl_Heinrich();
+
+	@Before
+	public void setUpBefore() throws Exception 
+	{
+		
+	}
+
+	@Test
+	public void test() 
+	{
+		System.out.println("this is the first instance of getTurn: "+ b1.getTurn());
+		assertEquals(Mark.X, b1.getTurn());
+		
+	}
+	
+	
+
+}

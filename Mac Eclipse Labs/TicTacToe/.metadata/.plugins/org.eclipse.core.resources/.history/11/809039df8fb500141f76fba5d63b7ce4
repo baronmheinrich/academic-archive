@@ -1,0 +1,156 @@
+package tictactoe;
+
+public class TicTacToeBoardImpl_Heinrich implements TicTacToeBoard 
+{
+
+	protected static final int NO_MOVE= -1;
+	protected static final int NO_MATCH= -1;
+
+	protected int[] movesArray;
+
+	public TicTacToeBoardImpl_Heinrich()
+	{
+		final int CELL_COUNT = ROW_COUNT*COLUMN_COUNT;
+		movesArray = new int[CELL_COUNT];
+
+		for(int i = 0; i <CELL_COUNT; i++)
+		{
+			movesArray[i] = NO_MOVE;
+		}
+	}
+
+	//Pre: 0<= row < ROW_COUNT && 0 <= column < COLUMN_COUNT
+	//Post: rv == null <==> the (row, column) spot on the board is empty
+	//Post: rv == O <==> the (row, column) spot on the board has an O existing mark on it
+	//Post: rv == X <==> the (row, column) spot on the board has an existing X mark on it
+	public Mark getMark(int row, int column) 
+	{
+		assert 0<= row && row < ROW_COUNT && 0<= column && column < COLUMN_COUNT: "Improper Board Configuration...";
+
+		int quadrant=NO_MOVE; //no_move
+		Mark result=null;
+		
+		quadrant = TicTacToeBoardUtils_Heinrich.getMarkAtCoordinate(row, column);
+		
+
+		for(int i=0; i < movesArray.length; i++)
+		{
+			if(movesArray[i]==quadrant)
+			{
+				if(i==-1)
+					result=null;
+				else if(i==0)
+					result=Mark.X;
+				else if (i%2==0)
+					result=Mark.X;
+				else
+					result=Mark.O;
+			}
+		}
+		return result;			
+	}
+
+	//pre: 0 <= row < ROW_COUNT && 0 <= column < COLUMN_COUNT
+	//pre: getMark(row, column) == null
+	//pre: !isGameOver()
+	//post: Sets X or an O on the row and column by calling getMark()
+	public void setMark(int row, int column)
+	{
+        assert row >= 0 && row < ROW_COUNT;
+        assert column <COLUMN_COUNT: "";
+        assert !isGameOver(): "Game is over... no more turns";
+        assert row>=0 && row < ROW_COUNT && column>=0 && column<COLUMN_COUNT: "Number not between 0 and 8";
+
+        assert getMark(row,column)==null:"that mark is already in the board..." ;
+        assert !isGameOver(): "game is over...";
+	        
+	        int quadrant=TicTacToeBoardUtils_Heinrich.getMarkAtCoordinate(row, column);
+
+
+				
+	        
+
+
+	    }                
+	
+
+	//post: rv == null <==> it is neither player's turn
+	//post: "number of the marks on board is even" -> rv == Mark.X
+	//post: "number of Marks on the board is odd" -> rv == Mark.O
+	public Mark getTurn() 
+	{
+		int currentTurn = 0;
+		int boardSpot=0;
+		do
+		{
+			currentTurn = movesArray[boardSpot];
+			boardSpot++;
+		}while(movesArray[boardSpot]!=NO_MOVE);
+		
+
+		if(currentTurn%2==0)
+		{
+			return Mark.X;
+		}
+		else
+			return Mark.O;
+	}
+
+	//Pre: setMark(row, column) <==> checks if the game is over before placing a mark
+	//Post: true <==> there's a winning combination
+	//Post: false <==> there isn't a winning combination
+	public boolean isGameOver() 
+	{
+		boolean result;
+		String board=this.toString();
+		String space=" ";
+	
+		result = TicTacToeBoardUtils_Heinrich.checkGameOver(board, space);
+		return result;
+	}
+
+//pre: isGameOver()
+//pre: setMark()
+//post: rv == O <==> O won the game
+//post: rv == X <==> X won the game
+//post: rv == null <==> neither player won (ie the game ended in a tie)
+	public Mark getWinner() 
+	{
+	    String board=toString();
+		Mark winner=null;
+		winner = TicTacToeBoardUtils_Heinrich.calculateWinner(board);
+		return winner;
+      }
+
+//pre: n/a
+//Post: A formatted tic tac toe board
+	public String toString()
+	{	
+		String newBoard="";
+		String toBoard="";
+		for(int r=0; r<ROW_COUNT; r++)
+		{
+			for(int c=0; c<COLUMN_COUNT; c++)
+			{
+				if(this.getMark(r, c)==Mark.X)
+				{
+					toBoard+='X';
+				}
+				else if(this.getMark(r, c)==Mark.O)
+				{
+					toBoard+='O';
+				}
+				else
+				{
+					toBoard+=" ";
+				}
+			}
+		}
+
+		newBoard=toBoard.charAt(0)+"|"+toBoard.charAt(1)+"|"+toBoard.charAt(2)+"\n-----\n"+toBoard.charAt(3)+"|"+toBoard.charAt(4)+"|"+toBoard.charAt(5)+"\n-----\n"+toBoard.charAt(6)+"|"+toBoard.charAt(7)+"|"+toBoard.charAt(8);
+		return newBoard;
+	}
+}
+
+
+

@@ -1,0 +1,403 @@
+********************************************************************************
+Baron Heinrich
+COSC 2125/2325
+Lab 4
+02/17/14
+********************************************************************************
+
+
+********************************************************************************
+VetVisitStandard.java
+********************************************************************************
+package lab5;
+
+public class VetVisitStandard extends VetVisit{
+
+	private String vaccines;
+	private int cityLicense;
+	private String otherCare;
+	
+	//pre: n/a
+	//post: default constructor
+	public VetVisitStandard()
+	{
+		super();
+		this.setCityLicense(0);
+		this.setOtherCare("**No Care**");
+		this.setVaccines("**No Vaccines**");
+	}
+	
+	//pre: super arguments and standard arguments
+	//post: constructor with super and standard's arguments
+	public VetVisitStandard(String theDate, String theDoctor, String theLocation, String vaccines, int License, String otherCare)
+	{
+		super(theDate, theDoctor, theLocation);
+		this.setCityLicense(License);
+		this.setVaccines(vaccines);
+		this.setOtherCare(otherCare);
+	}
+	
+	//pre: String vaccines
+	//post: sets vaccines
+	public void setVaccines(String vaccines)
+	{
+		this.vaccines=vaccines;
+	}
+	
+	//pre: int cityLicense
+	//post: sets cityLicense
+	public void setCityLicense(int cityLicense)
+	{
+		this.cityLicense=cityLicense;
+	}
+
+	//pre: string otherCare
+	//post: sets otherCare
+	public void setOtherCare(String otherCare)
+	{
+		this.otherCare=otherCare;
+	}
+	
+	//pre: n/a
+	//post: returns vaccines
+	public String getVaccines()
+	{		
+		return vaccines;
+	}
+	
+	//pre:n/a
+	//post: returns cityLicense
+	public int getCityLicense()
+	{
+	
+		return cityLicense;
+	}
+	
+	//pre: n/a
+	//post: returns otherCare
+	public String getOtherCare()
+	{
+		return otherCare;
+	}
+	
+	//pre: n/a
+	//post: returns super string appended on with Vaccines, Licenses, and other Care
+	public String toString()
+	{
+		String blank=super.toString();
+		String temp= blank + " Vaccine: "+ this.getVaccines()+ " License: "+this.getCityLicense()+ " Other Care: " +this.getOtherCare();
+		return temp;
+	}
+	
+}
+
+********************************************************************************
+VetVisitUrgent.java
+********************************************************************************
+package lab5;
+
+public class VetVisitUrgent extends VetVisit
+{
+	private String diagnosis;
+	private String treatment;
+
+	//pre: none
+	//post// default super, default diagnosis and treatment
+	public VetVisitUrgent()
+	{
+		super();
+		this.setDiagnosis("**No Diagnosis**");
+		this.setTreatment("**No Treatment**");
+	}
+	
+	//pre: arguments from super, arguments from VetVisitUrgent
+	//post: constructor with proper arguments
+	public VetVisitUrgent(String theDate, String theDoctor, String theLocation, String diagnosis, String treatment)
+	{
+		super(theDate, theDoctor, theLocation);
+		this.setDiagnosis(diagnosis);
+		this.setTreatment(treatment);
+	}
+
+	//pre: diagnosis string
+	//post: sets diagnosis
+	public void setDiagnosis(String diagnosis)
+	{
+		this.diagnosis=diagnosis;
+	}
+	
+	//pre: treatment String
+	//post: sets treatment
+	public void setTreatment(String treatment)
+	{
+		this.treatment=treatment;
+	}
+	
+	//pre: n/a
+	//post: returns treatment string
+	public String getTreatment()
+	{
+		return treatment;
+	}
+	
+	//pre: n/a
+	//post: returns diagnosis string
+	public String getDiagnosis()
+	{
+		return diagnosis;
+	}
+	
+	//pre: n/a
+	//post: returns appended string with super string followed by urgent's strings
+	public String toString()
+	{
+		String blank=super.toString();
+		String str=" Diagnosis: "+ this.getDiagnosis()+ " Treatment: "+ this.getTreatment();
+		String temp=blank+str;
+		return temp;
+	}
+}
+
+********************************************************************************
+VetVisitListImpl.java
+********************************************************************************
+package lab5;
+
+import java.util.GregorianCalendar;
+
+public class VetVisitListImpl implements VetVisitList {
+
+	private int count;
+	private Node<VetVisit>first;
+
+	//pre: n/a
+	//post: default constructor
+	public VetVisitListImpl()
+	{
+		this.first=null;
+		this.count=0;
+	}
+	
+	//pre: n/a
+	//post: returns count
+	public int size()
+	{
+		return this.count;
+	}
+
+	@Override
+	//pre: none
+	// post: returns a String of all vet visits that occurred on given date
+	public String getVetVisitListByDate(GregorianCalendar date) {
+		//make a blank string
+		//take string from argument and check all nodes
+		//append found date to blank string
+		//return blank string
+		
+		String blank="";
+		for(Node<VetVisit> node=this.first; node!=null; node=node.link)
+		{
+			if(node.data.getDateCalendar().equals(date))
+			//if(node.data.getDateCalendar()==date)
+				blank=blank+node.data+"\n";
+		}
+		
+		return blank;
+	}
+
+	//pre: VetVisit and visit
+	//post: compares data and if it's the same it returns true, else returns false
+	public boolean contains(VetVisit visit) {
+		//compareTo date and chipId from visit data
+		//if it equals 0 return true 
+
+		Node<VetVisit>current=this.first;
+		
+		while(current!=null)
+		{
+			if(current.data.compareTo(visit)==0)
+			{
+				return true;
+			}
+			current=current.link;
+		}
+
+		return false;
+	}
+
+	//pre: VetVisit and vist
+	//post: returns false if added visit exists, true if successfully added and increments count
+	public boolean add(VetVisit visit) {
+		//1. if already in the list return false
+		//2. Find where to put it...
+		//-must know where it is in the list, behind right node
+		//get new node and put data into that node
+		//connect the new node to the previous node
+		//if previous value is null, connect first, otherwise connect at previous
+		//increase count and return
+		if(this.contains(visit))
+		return false;
+		
+		Node<VetVisit>previous=null;
+		Node<VetVisit>current=this.first;
+		
+		while(current!=null)
+		{
+			if(current.data.compareTo(visit)<0)
+				break;
+			previous=current;
+			current=current.link;
+		}
+		Node<VetVisit>node=new Node<VetVisit>();
+		node.data=visit;
+		
+		if(previous==null)
+		{
+			node.link=this.first;
+			this.first=node;
+		}
+		else
+		{
+			node.link=previous.link;
+			previous.link=node;
+		}
+		this.count++;
+		return true;
+	}
+
+	//pre: VetVisit and visit
+	//post: returns null if not found, returns visit if found and decrements count
+	public VetVisit remove(VetVisit visit) 
+	{
+		//try to find visit in list, keep track of previous node and current node
+		// if current is null, return null
+		//if previous is null, disconnect the first node
+		//disconnect previous if found, decrement count, and return data
+		
+		Node<VetVisit>previous=null;
+		Node<VetVisit>current=this.first;
+		
+		while(current!=null)
+		{
+			if(current.data.compareTo(visit)==0)
+				break;
+			
+			previous=current;
+			current=current.link;
+
+		}
+
+		if(current==null)
+		{
+			return null;
+		}
+		
+		if(previous==null)
+		{
+			this.first=this.first.link;
+		}
+		
+		else
+		{
+			previous.link=current.link;
+		}
+		count --;
+		return current.data;
+		
+		}
+						
+	//pre: n/a
+	//post: sets count to 0 and first to null, clearing the list
+	public void removeAll() 
+	{
+		this.first=null;
+		this.count=0;
+	}
+
+	//pre:n/a
+	//post: returns a string based the nodes 
+	public String toString()
+	{
+		if(this.count==0)
+		{
+			String empty="Empty List";
+			return empty;
+		}
+		String blank="";
+		for(Node<VetVisit>node=this.first; node!=null; node=node.link)
+		{
+			blank=blank+node.data+"\n";
+		}
+		return blank;
+	}
+	
+}
+
+********************************************************************************
+Script
+********************************************************************************
+visit 1 = 
+qm3B 12/23/2013 DR. J. Animal Care Clinic Diagnosis: stomach illness Treatment: rest and food
+here is the list : 
+qm3B 12/23/2013 DR. J. Animal Care Clinic Diagnosis: stomach illness Treatment: rest and food
+
+here is the list : 
+KLOC 1/3/2014 DR. GREENE Emergency Vet Clinic Diagnosis: vertigo Treatment: prescription
+qm3B 12/23/2013 DR. J. Animal Care Clinic Diagnosis: stomach illness Treatment: rest and food
+
+here is the list : 
+KLOC 1/3/2014 DR. GREENE Emergency Vet Clinic Diagnosis: vertigo Treatment: prescription
+qm3B 12/23/2013 DR. J. Animal Care Clinic Diagnosis: stomach illness Treatment: rest and food
+ubov 2/12/2012 DR. HOUSE Animal Care Clinic Vaccine: rabies License: 4325 Other Care: rymadyl as needed.
+
+current list for 5/3/2010
+ZbgT 5/3/2010 DR. BLAGG Vet Care Hospital Diagnosis: illness Treatment: rest
+P2vE 5/3/2010 DR. BLAGG Vet Care Hospital Vaccine: rabies, parvo License: 1127 Other Care: No other care.
+
+current list for 12/23/2013
+qm3B 12/23/2013 DR. J. Animal Care Clinic Diagnosis: stomach illness Treatment: rest and food
+0mTx 12/23/2013 DR. BLAGG Vet Care Hospital Vaccine: rabies, parvo License: 1127 Other Care: No other care.
+
+current list for 1/3/2014
+KLOC 1/3/2014 DR. GREENE Emergency Vet Clinic Diagnosis: vertigo Treatment: prescription
+
+current list for 4/3/2014
+
+current list for 11/24/2009
+
+here is the list : 
+KLOC 1/3/2014 DR. GREENE Emergency Vet Clinic Diagnosis: vertigo Treatment: prescription
+qm3B 12/23/2013 DR. J. Animal Care Clinic Diagnosis: stomach illness Treatment: rest and food
+0mTx 12/23/2013 DR. BLAGG Vet Care Hospital Vaccine: rabies, parvo License: 1127 Other Care: No other care.
+ubov 2/12/2012 DR. HOUSE Animal Care Clinic Vaccine: rabies License: 4325 Other Care: rymadyl as needed.
+ZbgT 5/3/2010 DR. BLAGG Vet Care Hospital Diagnosis: illness Treatment: rest
+P2vE 5/3/2010 DR. BLAGG Vet Care Hospital Vaccine: rabies, parvo License: 1127 Other Care: No other care.
+
+here is the list: 
+KLOC 1/3/2014 DR. GREENE Emergency Vet Clinic Diagnosis: vertigo Treatment: prescription
+qm3B 12/23/2013 DR. J. Animal Care Clinic Diagnosis: stomach illness Treatment: rest and food
+0mTx 12/23/2013 DR. BLAGG Vet Care Hospital Vaccine: rabies, parvo License: 1127 Other Care: No other care.
+ubov 2/12/2012 DR. HOUSE Animal Care Clinic Vaccine: rabies License: 4325 Other Care: rymadyl as needed.
+ZbgT 5/3/2010 DR. BLAGG Vet Care Hospital Diagnosis: illness Treatment: rest
+P2vE 5/3/2010 DR. BLAGG Vet Care Hospital Vaccine: rabies, parvo License: 1127 Other Care: No other care.
+
+just removed qm3B 12/23/2013 DR. J. Animal Care Clinic Diagnosis: stomach illness Treatment: rest and food
+List of 2 :
+ubov 2/12/2012 DR. HOUSE Animal Care Clinic Vaccine: rabies License: 4325 Other Care: rymadyl as needed.
+P2vE 5/3/2010 DR. BLAGG Vet Care Hospital Vaccine: rabies, parvo License: 1127 Other Care: No other care.
+
+here is the list: 
+KLOC 1/3/2014 DR. GREENE Emergency Vet Clinic Diagnosis: vertigo Treatment: prescription
+P2vE 5/3/2010 DR. BLAGG Vet Care Hospital Vaccine: rabies, parvo License: 1127 Other Care: No other care.
+
+here is the list with a default urgent: 
+KLOC 1/3/2014 DR. GREENE Emergency Vet Clinic Diagnosis: vertigo Treatment: prescription
+P2vE 5/3/2010 DR. BLAGG Vet Care Hospital Vaccine: rabies, parvo License: 1127 Other Care: No other care.
+2z7c 1/1/2000 **NO DOCTOR** **no location** Diagnosis: **No Diagnosis** Treatment: **No Treatment**
+
+here is final list with a default standard: 
+KLOC 1/3/2014 DR. GREENE Emergency Vet Clinic Diagnosis: vertigo Treatment: prescription
+P2vE 5/3/2010 DR. BLAGG Vet Care Hospital Vaccine: rabies, parvo License: 1127 Other Care: No other care.
+ngtV 1/1/2000 **NO DOCTOR** **no location** Vaccine: **No Vaccines** License: 0 Other Care: **No Care**
+2z7c 1/1/2000 **NO DOCTOR** **no location** Diagnosis: **No Diagnosis** Treatment: **No Treatment**
+

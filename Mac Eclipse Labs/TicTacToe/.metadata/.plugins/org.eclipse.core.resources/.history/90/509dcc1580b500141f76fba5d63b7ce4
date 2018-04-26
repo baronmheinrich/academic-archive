@@ -1,0 +1,42 @@
+package tictactoe;
+
+public class TicTacToeBoardUtils_Heinrich 
+{
+
+public int getMarkAtCoordinate(int row, int column) 
+{
+	int quadrant=0;
+	if(row==0)
+	{
+		if(column==0)
+			quadrant=0;
+		else if(column==1)
+			quadrant=1;
+		else if(column==2)
+			quadrant=2;
+	}
+	else if(row==1)
+	{
+		if(column==0)
+			quadrant=3;
+		else if(column==1)
+			quadrant=4;
+		else if(column==2)
+			quadrant=5;
+
+	}
+	else if(row==2)
+	{
+		if(column==0)
+			quadrant=6;
+		else if(column==1)
+			quadrant=7;
+		else if(column==2)
+			quadrant=8;
+	}
+	return quadrant;
+}
+
+
+
+}

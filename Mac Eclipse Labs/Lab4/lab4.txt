@@ -1,0 +1,890 @@
+Bonus 5 points added to my score
+****************************************
+Baron Heinrich
+COSC 2125/2325
+Lab 4
+02/17/14
+****************************************
+
+****************************************
+HousePet.java
+****************************************
+package lab4;
+
+import java.io.PrintWriter;
+import java.util.Scanner;
+
+public class HousePet implements Comparable <HousePet>
+{
+	private int theChipId;
+	private String theName;
+	private String thePetType;
+	private double theAge;
+
+	// default constructor, creates a default HousePet instance
+	// with chipId as 0, name as "**no name**", petType as "**no type**", 
+	// and age as 0.0.
+	public HousePet()
+	{
+		this.setChipId(0);
+		this.setName("**No Name**");
+		this.setPetType("**no type**");
+		this.setAge(0.0);
+	}
+
+	//pre: Receives data to initialize constructor
+	//post: creates house pet with given data
+	public HousePet(int theChipId, String theName,  String thePetType, double theAge)
+	{
+		this.setChipId(theChipId);
+		this.setName(theName);
+		this.setPetType(thePetType);
+		this.setAge(theAge);
+
+		//following if statements check the data
+		//if any of the data is invalid, makes the field the default
+		if(theChipId<0)
+		{
+			theChipId=0;
+		}
+
+		if(theName.length()==0)
+		{
+			theName="**No Name**";
+		}
+
+		if(thePetType.length()==0)
+		{
+			thePetType="**no type**";
+		}
+
+		if(theAge<0.0)
+		{
+			theAge=0.0;
+		}
+
+	}
+	// creates a HousePet instance with the given data, if any is invalid
+	// puts default value into field ( invalid data is a negative chipId or
+	//  negative age)
+
+	//pre: none
+	//post: returns ChipId Value
+	public int getChipId()
+	{
+		return theChipId;
+	} // returns this house pet's chipId
+
+	//pre: none
+	//post: returns the name
+	public String getName()
+	{
+		return theName;
+	} // returns name of this house pet
+
+	//pre: none
+	//post: returns Pet Type
+	public String getPetType()
+	{
+		return thePetType;
+	} // returns the petType of this house pet
+
+	//pre: none
+	//Post: returns age value
+	public double getAge()
+	{
+		return theAge;
+
+	} // returns the age of this house pet
+
+	//pre: chip ID value
+	//post: sets chip ID value to given chip ID, 0 if invalid
+	public void setChipId(int theChipId)
+	{
+		this.theChipId=theChipId;
+
+		if(theChipId<0)
+		{
+			this.theChipId=0;
+		}
+
+	} // sets this HousePet's chipId to given number
+	// or to 0 if invalid chipId given
+
+	//pre: theName String
+	//post: sets given string as name, returns no name if invalid
+	public void setName(String theName)
+	{
+		this.theName=theName;
+		if(theName.length()==0)
+		{
+			this.theName="**No Name**";
+		}
+	}
+	//sets this HousePet's name to theName, if 
+	// theName is blank, then uses default value
+
+	//pre: thePetType string
+	//post: sets the inputed string as the Pet Type
+	public void setPetType(String thePetType)
+	{
+		this.thePetType=thePetType;
+
+		if(thePetType.length()==0)
+		{
+			this.thePetType="**no type**";
+		}
+	}  //sets this HousePet's type to given type
+	// if thePetType is blank, then uses default value
+
+	//pre: theAge double value
+	//post: sets the inputed value, returns 0.0 if invalid
+	public void setAge(double theAge)
+	{
+		this.theAge=theAge;
+
+		if(theAge<0.0)
+		{
+			this.theAge=0.0;
+		}
+	} // sets this HousePet's age to the given age
+
+	//pre: none
+	//post: returns readable string from setters
+	public String toString()
+	{
+		String output="Chip ID: "+theChipId+" Name: "+theName+" Pet Type: "+ thePetType+" Age: "+theAge+"";
+		return output;
+	} // returns a readable string 
+	// of this HousePet as ONE line of understandable text
+
+	//pre: scanner
+	//post: returns true and sets data if all the data in the document is correct
+	public boolean readFromScanner(Scanner inputSource)
+	{
+		int aChipId=0;
+		String aName="";
+		String aType="";
+		double aAge=0.0;
+
+		if(inputSource.hasNextInt())
+		{
+			aChipId=inputSource.nextInt();
+			inputSource.nextLine();
+
+			if(inputSource.hasNext())
+			{
+				aName=inputSource.nextLine();
+
+				if(inputSource.hasNext())
+				{
+					aType=inputSource.nextLine();
+
+					if(inputSource.hasNextDouble())
+					{
+						aAge=inputSource.nextDouble();
+
+						this.theAge=aAge;
+						this.theName=aName;
+						this.thePetType=aType;
+						this.theChipId=aChipId;
+
+						return true;
+					}//end of Double
+
+				}// end of aType
+
+			}//end of if input Source
+
+		}// end of if next
+
+		return false;	
+	} 
+
+
+	//pre: housepet and HousePet
+	//post: returns integer value to sort list
+	public int compareTo(HousePet housepet)
+	{
+		int value=0;
+
+		if(this.getChipId()<housepet.getChipId())
+			value=-1;
+
+		if(this.getChipId()>housepet.getChipId())
+			value=1;
+
+		return value;
+	}
+
+	//pre: housepet document and Housepet constructor
+	//post: returns integer value after comparing strings to sort list
+	public int compareByName(HousePet housepet)
+	{
+		int value=this.getName().compareTo(housepet.getName());
+
+		if(this.getName().compareTo(housepet.getName())==0)
+			value=this.compareTo(housepet);
+
+		return value;
+	}
+
+	//pre: PrintWriter and outFile
+	//Post: println Chip Id, Name, Pet Type, and Age to a file
+	public void writeToFile(PrintWriter outFile) 
+	{
+		outFile.println(this.getChipId());
+		outFile.println(this.getName());
+		outFile.println(this.getPetType());
+		outFile.println(this.getAge());
+		outFile.checkError();
+
+	}
+
+}
+//end of HousePet.java
+
+
+****************************************
+HousePetList.java
+****************************************
+/**
+   HousePetList interface
+   used to describe methods useful with a list of HousePet instances
+   January 21, 2014
+   cosc 2125
+ */
+
+package lab4;
+
+import java.util.Scanner;
+
+public interface HousePetList
+{
+	public static final int MAX_SIZE = 30; // max number of items in list
+	public void readFromScanner(Scanner inputSource);
+	// populates this list from inputSource until full or inputSource is exhausted
+	// makes sure that list is sorted always in ascending order
+	public void sortByChipIdentifier();
+	// sorts the list by account number
+	public void sortByName();
+	// sorts the list by name, if 2 names match, break tie on account number field
+	public boolean add(HousePet housepet);
+	// tries to add housepet to list if room and not already in the list
+	// returns true on successful add, false if unable to add
+	// keeps list sorted in ascending order, assumes Comparable is implemented for
+	// HousePet instances
+	public HousePet remove(HousePet housepet);
+	// tries to find and remove housepet from the list, if found 
+	//  removes and returns that housepet from the list.
+	//  assumes list is sorted in ascending order always using Comparable interface
+	// if not found, returns null.
+	public void removeAll();
+	// removes ALL housepets
+	public boolean contains(HousePet housepet);
+	// returns true if housepet matches another housepet in the list
+	// returns false if no match found ASSUMES HousePets are Comparable and
+	// list is sorted always in ascending order
+	public int size();
+	// returns the current number of elements in the list+
+	
+	  // returns a String containing a  list of all housepets that 
+    // have the given name, case insensitive
+    // returns empty string if NO housepets match with given housePetName
+    // (make sure you fix or solve the upper/lowercase string compare problem.)
+   public String getHousePetsByName(String housePetName);
+
+   // tries to find housepet with given chip id number, if found modifies age
+   // to given newAge
+   // if not found no changes made, returns false
+   // pre: newAge >= 0
+   // post: if theChipId matches housepet in current list, modify
+   // age of that housepet to given newAge, returns true.  
+   // If newAge < 0 returns false.
+   public boolean  modifyAge(int theChipIdNumber, double newAge);
+
+   // pre: receives a filename to save current list out to
+   //      filename is a valid system filename 
+   // post: writes current list to file with given filename.  Overwrites file
+   //       with filename if that file currently exists, if not, creates file.
+   // returns: true if list is saved to file, false if cannot write to file or any such output problem
+   public boolean saveToFile(String filename);
+  
+   // pre: none
+   // post: returns true if the current list has been saved, false if list has been modified since last saved
+   public boolean isSaved();
+}
+****************************************
+HousePetListImpl.java
+****************************************
+package lab4;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
+import java.util.*;
+
+public class HousePetListImpl implements HousePetList
+{
+	//private variables
+	private HousePet list[];
+	private int count;
+	private boolean saved;
+
+	//pre: none
+	//Post: blank constructor
+	public HousePetListImpl()
+	{
+		this.list=new HousePet[HousePetList.MAX_SIZE];
+		this.count=0;
+		this.saved=true;
+	}
+
+	//pre: none
+	//Post: returns string of list array, returns empty list if blank
+	public String toString()
+	{
+		String blank="";
+
+		if(this.count==0)
+		{
+			blank="Empty List";	
+			return blank;
+		}
+
+		else
+			for(int i=0; i<this.count; i++)
+			{
+				blank+=this.list[i]+"\n";
+			}
+		return blank;
+	}
+
+	//pre: scanner in
+	//post: tries to take data from scanner and place it in an array
+	public void readFromScanner(Scanner inputSource)
+	{
+		HousePet pet=new HousePet();
+		boolean result=pet.readFromScanner(inputSource);
+		while(result==true && this.count<HousePetList.MAX_SIZE)
+		{
+			
+			boolean add=this.add(pet);
+			if(add==false){
+				System.out.println("Duplicate Chip Id found:"+pet);
+				System.out.println("Duplicate house pets not added to the list.");
+			}
+			pet=new HousePet();
+			result=pet.readFromScanner(inputSource);
+		}
+		this.sortByChipIdentifier();
+	}
+
+	//pre: none
+	//post: sorts array by chip ID
+	public void sortByChipIdentifier() 
+	{
+		{
+			for(int i=0; i<count-1; i++)
+			{
+				int min=i;
+				for(int k=i+1; k<count; k++)
+				{
+					if(this.list[k].compareTo(this.list[min])<0)
+					{
+						min=k;					
+					}
+				}
+				HousePet temp=this.list[i];
+				this.list[i]=this.list[min];
+				this.list[min]=temp;
+			}
+		}
+	}
+
+
+
+	//pre: none
+	//post: sorts list by name
+	public void sortByName() 
+	{
+		for(int i=0; i<count-1; i++)
+		{
+			int min=i;
+			for(int k=i+1; k<count; k++)
+			{
+
+				if(this.list[k].compareByName(this.list[min])<0)
+				{
+					min=k;					
+				}
+			}
+			HousePet temp=this.list[i];
+			this.list[i]=this.list[min];
+			this.list[min]=temp;
+		}
+
+	}
+
+	//pre: Housepet constructor and housepet object
+	//post: Adds pet to the list, and reorganizes it
+	//post: if list is full or pet already exists, doesn't add it to list
+	public boolean add(HousePet housepet)
+	{
+		if(this.count>=HousePetList.MAX_SIZE)
+		{	
+			return false;
+		}
+
+		if(this.contains(housepet))
+		{
+			return false;
+		}
+		this.list[this.count]=housepet;
+		this.count++;
+		this.sortByChipIdentifier();
+		this.saved=false;
+		return true;
+
+	}
+
+	//pre: HousePet constructor and housepet object
+	//post: searches for housepet, if not found returns null.  If successful, removes housepet from list, and reorganizes the list again.
+	public HousePet remove(HousePet housepet) 
+	{
+		int location=this.binSearch(housepet);
+		if(location==-1)
+		{
+			return null;
+		}
+
+		HousePet value=this.list[location];
+		this.list[location]=this.list[count-1];
+		count--;
+		this.saved=false;
+		this.sortByChipIdentifier();
+		return value;
+	}
+
+	//pre: n/a
+	//post: sets count to zero, clearing the array		this.saved=true;
+	public void removeAll() 
+	{
+		this.count=0;
+	}
+
+	//pre: HousePet constructor and housepet object
+	//post: returns false if the housepet is found, true if it isn't
+	public boolean contains(HousePet housepet) 
+	{
+		//sortByChipIdentifier called to double check list order
+		this.sortByChipIdentifier();
+		// returns true if housepet matches another housepet in the list
+		// returns false if no match found ASSUMES HousePets are Comparable and
+		// list is sorted always in ascending order
+		if(binSearch(housepet)<0)
+		{
+			return false;
+		}
+
+		else
+			return true;
+	}
+
+	//pre: n/a
+	//post: returns number of elements in the list
+	public int size()
+	{
+		// returns the current number of elements in the list
+		return this.count;
+	}
+
+	//pre: HousePet constructor and housepet object
+	//post: returns values based on search results, -1 if not found at all
+	private int binSearch(HousePet housepet)
+	{
+		int low=0;
+		int high=this.count-1;
+
+		while(low<=high)
+		{
+			int mid=(low+high)/2;
+			int SearchValue=list[mid].compareTo(housepet);
+
+			if(SearchValue==0)
+				return mid;
+
+			if(SearchValue>0)
+				high=mid-1;
+
+			else
+				low=mid+1;
+
+		}
+		return -1;
+	}
+
+	//pre: housepet name string
+	//post: returns string of housepet data, returns blank string if no housepet found
+	public String getHousePetsByName(String housePetName) 
+	{
+		String petName="";
+		for(int i=0; i<this.count; i++)
+		{
+			String str=this.list[i].getName();
+			if(housePetName.compareToIgnoreCase(str)==0)
+			{
+				petName=petName+this.list[i]+"\n";
+			}
+		}
+
+		return petName;
+	}
+
+
+	//pre: chipIdNumber and NewAge
+	//post: modifies age based on given chipId and age, alters saved boolean and returns true
+	public boolean modifyAge(int theChipIdNumber, double newAge) 
+	{
+		//don't forget to modify 'saved' boolean!!
+		HousePet housepet=new HousePet();
+		housepet.setChipId(theChipIdNumber);
+		if(newAge<0)
+			return false;
+
+		int location=this.binSearch(housepet);
+		if(location==-1)
+		{
+			return false;
+		}
+
+		else{
+			this.list[location].setAge(newAge);
+			this.saved=false;
+			return true;
+		}
+
+	}
+
+	//pre: string with filename
+	//post: creates new file based on filename, returns false if file cannot be made
+	public boolean saveToFile(String filename) 
+	{
+		PrintWriter outFile=null;
+
+		try
+		{
+			outFile=new PrintWriter(new File(filename));
+			for(int i=0; i<this.count; i++)
+			{
+				this.list[i].writeToFile(outFile);
+			}
+			outFile.close();
+			this.saved=true;
+			return true;
+
+		} 
+		catch (FileNotFoundException e) 
+		{
+
+			return false;
+		}
+	}
+
+
+	// pre: none
+	// post: returns true if the current list has been saved, false if list has been modified
+	public boolean isSaved() 
+	{
+		return saved;
+	}
+
+
+}
+****************************************
+Lab3MenuTest.java
+****************************************
+package lab4;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Scanner;
+
+//the test class for the menu driven program
+public class Lab3MenuTest
+{
+	// the main method that starts everything
+	public static void main(String args[] )
+	{
+		// create a list of HousePet objects
+		HousePetList myList = new HousePetListImpl();  
+
+		char option = '$';
+		do
+		{
+			displayMenuToUser(); // show menu options to user 
+			option = getUserSelection();  // get user's option
+			switch(option)
+			{
+			case 'a': populateList(myList);
+			break;
+			case 'b': menuAdd(myList);
+			break;
+			case 'c': menuRemove(myList);
+			break;
+			case 'd': removeAll(myList);
+			break;
+			case 'e':viewList(myList);
+			break;
+			case 'f': menuSearch(myList);
+			break;
+			case 'g': listSize(myList);
+			break;
+			case 'h': petNameSearch(myList);
+			break;
+			case 'i': modifyAge(myList);
+			break;
+			case 'j': saveList(myList);
+			break;
+			case 'k': exitMessage(myList);
+
+			} // end switch
+		}
+		while( option !='k') ;
+	} // end main
+
+
+
+	//pre:n/a
+	//post: displays menu options to the user
+	public static void displayMenuToUser() 
+	{
+		/*
+	a) populate list from user supplied data file
+   	b) add pet to the list
+   	c) remove pet from the list
+   	d) remove all pet from the list
+   	e) view the current list
+   	f) check if an pet is in the list
+   	g) get the size of the list
+   	h) find all pets with a given name
+   	i) modify the age of a given pet id
+   	j) save the current list out to a file
+   	k) quit  (checks if current list is saved, and if not asks to save before exiting)
+		 */
+		System.out.println("Welcome to the Rad Pet List Storter!  Pick a command: \n");
+		System.out.println("a) Populate data from your own list... ");
+		System.out.println("b) Add a pet to the list... ");
+		System.out.println("c) Remove a pet from the list... ");
+		System.out.println("d) Remove all pets from the list... ");
+		System.out.println("e) view the list... ");
+		System.out.println("f) check if a pet is in the list... ");
+		System.out.println("g) check the size of the list... ");
+		System.out.println("h) find all pets with given name...");
+		System.out.println("i) modify age...");
+		System.out.println("j) save list...");
+		System.out.println("k) quit the rad pet list sorter.");
+	}
+
+	//pre: n/a
+	//post: returns the user choice
+	public static char getUserSelection ()
+	{  
+		char choice;
+		String answer; // holds the user's selection
+		Scanner input = new Scanner (System.in);
+
+		do {
+			System.out.print("Enter your selection: ");
+			answer = input.nextLine();
+			choice = Character.toLowerCase(answer.charAt(0));
+		} while ( choice !='k' && choice !='a' && choice !='b' &&
+				choice !='c' && choice !='d' && choice !='e' && choice !='f' && choice !='g'  && choice !='h'
+				&& choice !='i' && choice !='j'); 
+		// assuming a-h are good and h is quit (modify as needed for options) 
+		return choice;
+	} 
+
+	//pre: HousePetList and myList
+	//post: populates list from user supplied file if successful, returns error message otherwise
+	public static void populateList(HousePetList myList) 
+	{
+		//Case A
+		Scanner console=new Scanner(System.in);
+		System.out.println("Please enter a file name:");
+		String fileName=console.nextLine();
+
+		try {
+			Scanner input = new Scanner(new File(fileName));
+			myList.readFromScanner(input);
+			System.out.println("File Added! \n");
+		}catch (FileNotFoundException e) {
+			System.out.println("error, cannot open file." +
+					" NOT FOUND, no data can be read");
+		}
+	}
+
+	//pre: HousePetList and myList
+	//post: returns a message if the pet was added successfully
+	public static void menuAdd(HousePetList myList)
+	{
+		//Case B
+		Scanner input = new Scanner(System.in);
+		HousePet housepet = new HousePet(); 
+		// create object to be added
+		System.out.println("enter data for your house pet, return at each entry: (ID, Name, Type, Age...)");
+		housepet.readFromScanner(input);  //  read in data for Account
+		boolean result = myList.add(housepet);  // call the add method of add
+		if (result) // if we got back a true from add
+			System.out.println(housepet + "\nYour pet was added successfully to the list! \n");
+		else
+			System.out.println(housepet + "\nYour pet was NOT added to the list... \n");
+		return;
+	} // end MenuAdd
+
+
+	//pre: HousePetList and myList
+	//post: returns successful or failed message at removing the pet from the list
+	public static void menuRemove(HousePetList myList) 
+	{
+		//Case C
+		Scanner console=new Scanner(System.in);
+		HousePet housepet = new HousePet();
+
+		System.out.println("Please select a house pet you'd like to remove, return at each entry: (ID, Name, Type, Age)");
+		housepet.readFromScanner(console);
+
+		if(myList.remove(housepet)==null)
+			System.out.println("The selected house pet was not removed. \n");
+		else
+			System.out.println("The selected house pet was successfully removed. \n");
+
+	}
+
+	//pre: HousePetList and myList
+	//post: calls method to set count to 0
+	public static void removeAll(HousePetList myList) 
+	{
+		//Case D
+		myList.removeAll();
+		System.out.println("List cleared \n");
+	}
+
+	//pre: HousePetList myList
+	//post: displays current list
+	public static void viewList(HousePetList myList) 
+	{
+		//Case E
+		System.out.println("Your list is as follows...\n");
+		System.out.println(myList);
+	}
+
+	//pre: HousePetList and myList
+	//Post: searches list and returns a message with the results
+	public static void menuSearch(HousePetList myList) 
+	{
+		//Case F
+		Scanner console=new Scanner(System.in);
+		HousePet housepet = new HousePet(); 
+
+		System.out.println("Please enter a house pet you want to search, return at each entry: (ID, Name, Type, Age)");
+		housepet.readFromScanner(console);
+		boolean result=myList.contains(housepet);
+
+		if(result==false)
+			System.out.println("That pet is not in the list... \n");
+		else
+			System.out.println("That pet is in the list!\n");
+	}
+
+	//pre: HousePetList and myList
+	//post: returns a message with the size of the list
+	public static void listSize(HousePetList myList)
+	{
+		//case g
+		int size=myList.size();
+		System.out.println("The size of your list is: "+ size+ "\n");
+	}
+
+	//pre: HousePetList and myList
+	//post: returns a string of housepets found with given name, blank if none are found
+	public static void petNameSearch(HousePetList myList) 
+	{
+		//Case H
+
+		  // returns a String containing a  list of all housepets that 
+	    // have the given name, case insensitive
+	    // returns empty string if NO housepets match with given housePetName
+	    // (make sure you fix or solve the upper/lowercase string compare problem.)
+		
+		Scanner console=new Scanner(System.in);
+		System.out.println("Please enter a pet name:");
+		String userHousePet=console.nextLine();
+		String myHousePetName=myList.getHousePetsByName(userHousePet);
+		System.out.println(myHousePetName);
+		
+	}
+
+
+
+	//pre: HousePetList myList
+	//post: Alters housepet age and returns a string if it was done successfuly or not
+	public static void modifyAge(HousePetList myList) 
+	{
+		//case I
+		Scanner scan=new Scanner(System.in);
+
+		System.out.println("Please enter a Chip Id: ");
+		int userChipId=scan.nextInt();
+
+		System.out.println("Please enter the new age: ");
+		double newAge=scan.nextDouble();
+
+		if(myList.modifyAge(userChipId, newAge)==true)
+			System.out.println("Your pet's age was successfully modified! \n");
+		else
+			System.out.println("Your pet's age was not modified...\n");
+
+	}
+
+	//pre: HousePetList and myList
+	//post: tries saves the file based on user input, returns true if successful
+	private static void saveList(HousePetList myList) 
+	{
+		//case J
+		Scanner scan=new Scanner(System.in);
+		System.out.println("Please enter a file name: ");
+		String filename=scan.nextLine();
+		
+		boolean result=myList.saveToFile(filename);
+		
+		if(result==true)
+		{
+			System.out.println("Your list was successfully saved!\n");
+		}
+		else
+			System.out.println("Your list was not saved...");
+
+
+	}
+
+
+	//pre: HousePetList and myList
+	//post: Checks if list is saved, prompts user to save, then terminates the program, 
+	public static void exitMessage(HousePetList myList)
+	{
+		//case k
+		Scanner scan=new Scanner(System.in);
+		
+		boolean saved=myList.isSaved();
+		if(saved==false){
+			System.out.println("Would you like to save? Y/N");
+			String choice=scan.nextLine();
+			if(choice.equalsIgnoreCase("Y")){
+				saveList(myList);
+			}
+		}
+				System.out.println("Program Terminated");
+	}
+
+} // end MenuTest class

@@ -1,0 +1,353 @@
+package bowling;
+
+/**
+ * @author BARON HEINRICH
+ * NOTE: You can "strip this skeleton for parts"
+ * Don't assume that all of the preconditions are included
+ * Be sure to check this code for correctness
+ */
+public class SinglePlayerBowlingScoreboardImpl_Heinrich implements SinglePlayerBowlingScoreboard, AssignmentMetaData
+{
+	private static final int MAXIMUM_ROLLS = 21;	//Maximum rolls in a one player game
+	private String playerName;
+	private int[] pinsKnockedDownArray = new int[MAXIMUM_ROLLS];
+	private int rollCount = 0;
+
+	public SinglePlayerBowlingScoreboardImpl_Heinrich(String playerName)
+	{
+		assert playerName != null : "playerName is null!";
+		this.playerName = playerName;
+	}
+
+
+	public String getPlayerName()
+	{
+		return playerName;
+	}
+
+	public int getCurrentFrame() 
+	{
+		//use rollCount for get current frame
+		assert !isGameOver() : "Game is over!";
+//		int currentFrame=SinglePlayerBowlingScoreboardUtils_Heinrich.getFrameFromRoll(rollCount);
+	
+		return (rollCount/2)+1;		
+
+	}
+
+	//post: RV is the current Mark on that frame and botx index
+	public Mark getMark(int frameNumber, int boxIndex) 
+	{	
+		assert 1 <= frameNumber : "frameNumber = " + frameNumber + " < 1!";
+		assert frameNumber <= 10 : "frameNumber = " + frameNumber + " > 10!";
+		assert 1 <= boxIndex : "boxIndex = " + boxIndex + " < 1!";
+		assert boxIndex <= 3 : "boxIndex = " + boxIndex + " > 3!";
+		//		Exercise for student: Fix
+		//		assert (boxIndex != 2) || (!isStrike(frameNumber) && !isSpare(frameNumber)) : "boxIndex = " + boxIndex + ", but there was a Strike! : frameNumber = " + frameNumber;
+		//		assert (boxIndex != 2) || (!isSpare(frameNumber)) : "boxIndex = " + boxIndex + ", but there was a Spare! : frameNumber = " + frameNumber;
+		Mark mark = null;
+		if(frameNumber < 10) mark = getMarkSingleDigitFrameNumber(frameNumber, boxIndex);
+		else mark = getMarkTenthFrame(boxIndex);
+		assert mark != null : "mark is null!";
+		return mark;
+	}
+
+	//post: rv is an EMPTY mark if the sum of frameNumber and boxIndex are greater than the roll count
+	//post: rv is an actual mark otherwise and gets the correct value at that box index
+	private Mark getMarkSingleDigitFrameNumber(int frameNumber, int boxIndex)
+	{
+		assert 1 <= frameNumber : "frameNumber = " + frameNumber + " < 1!";
+		assert frameNumber <= 9 : "frameNumber = " + frameNumber + " > 9!";
+		assert 1 <= boxIndex : "boxIndex = " + boxIndex + " < 1!";
+		assert boxIndex <= 2 : "boxIndex = " + boxIndex + " > 2!";
+
+		Mark currentMark;
+		int scoreFromFrameAndBox;
+		if (((frameNumber*2)-2)+boxIndex > rollCount)
+		{
+			currentMark= Mark.EMPTY;
+		}
+		else if (boxIndex==1)
+		{
+			scoreFromFrameAndBox=pinsKnockedDownArray[(frameNumber*2)-2];
+			if(scoreFromFrameAndBox==10)
+			{
+				currentMark=Mark.STRIKE;
+			}
+			else
+			{
+				currentMark= Mark.translate(pinsKnockedDownArray[(frameNumber*2)-2]);
+			}
+		}
+		else
+		{
+			currentMark= Mark.translate(pinsKnockedDownArray[(frameNumber*2)-1]);
+		}
+
+		return currentMark;
+	}
+
+	//post: rv is the current mark of the array at one of the three last indexes
+	private Mark getMarkTenthFrame(int boxIndex)
+	{
+		assert 1 <= boxIndex : "boxIndex = " + boxIndex + " < 1!";
+		assert boxIndex <= 3 : "boxIndex = " + boxIndex + " > 3!";
+
+		Mark currentMark;
+		if(boxIndex==1)
+		{
+			currentMark=Mark.translate(pinsKnockedDownArray[18]);
+		}
+		else if(boxIndex==2)
+		{
+			currentMark=Mark.translate(pinsKnockedDownArray[19]);
+		}
+		else
+		{
+			currentMark=Mark.translate(pinsKnockedDownArray[20]);
+		}
+		
+		return currentMark;
+	}
+
+	//post: rv is the sum of all the frames
+	public int getScore(int frameNumber) 
+	{
+		assert 1 <= frameNumber : "frameNumber = " + frameNumber + " < 1!";
+		assert frameNumber <= 10 : "frameNumber = " + frameNumber + " > 10!";
+
+		int currentScore=0;
+
+		for(int i=1; i<=frameNumber; i++)
+		{
+
+			currentScore=currentScore+pinsKnockedDownArray[(i*2)-2];
+			currentScore=currentScore+pinsKnockedDownArray[(i*2)-1];
+			
+		}
+
+		return currentScore;
+
+	}
+
+	//post: rv TRUE if rollCount is greater than 18
+	//post: rv FALSE otherwise
+	public boolean isGameOver() 
+	{
+		boolean isGameOver=false;
+
+		if(rollCount>MAXIMUM_ROLLS)
+		{
+			isGameOver=true;
+		}
+
+		return isGameOver;
+	}
+
+	//post: records the roll at the roll count
+	//post: increments the rollcount
+	public void recordRoll(int pinsKnockedDown) 
+	{
+		assert 0 <= pinsKnockedDown : "pinsKnockedDown = " + pinsKnockedDown + " < 0!";
+		assert pinsKnockedDown <= 10 : "pinsKnockedDown = " + pinsKnockedDown + " > 10!";
+		assert (getCurrentBall() == 1) || 
+		((getCurrentBall() == 2) && (((getCurrentFrame() == 10) && isStrikeOrSpare(getMark(10, 1))) || ((pinsKnockedDownArray[rollCount - 1] + pinsKnockedDown) <= 10))) || 
+		((getCurrentBall() == 3) && (((getCurrentFrame() == 10) && isStrikeOrSpare(getMark(10, 2))) || ((pinsKnockedDownArray[rollCount - 1] + pinsKnockedDown) <= 10)));
+		assert !isGameOver() : "Game is over!";
+
+		pinsKnockedDownArray[rollCount] = pinsKnockedDown;
+		rollCount++;
+	}
+
+	//part of pre: !isGameOver()
+	//part of post: 1 <= rv <= 3
+	//part of post: frameNumber < 10 ==> rv <= 2
+	//part of post: ((frameNumber < 10) && (rv == 2)) ==> getMark(frameNumber, 1).equals(Mark.STRIKE)
+	public int getCurrentBall() 
+	{
+		assert !isGameOver() : "Game is over!";
+		//rv of 1 is the first ball in the first slot of a single frame
+		//rv of 2 is the second ball in the second slot of a single frame
+		//rv of 3 is the last ball at slot 10
+
+		int currentBall=(rollCount%2)+1;
+		if(rollCount==21)
+		{
+			currentBall=3;
+		}
+		return currentBall;
+
+	}
+
+	private static final String VERTICAL_SEPARATOR = "#";
+	private static final String HORIZONTAL_SEPARATOR = "#";
+	private static final String LEFT_EDGE_OF_SMALL_SQUARE = "[";
+	private static final String RIGHT_EDGE_OF_SMALL_SQUARE = "]";
+	private String getScoreboardDisplay()
+	{
+		StringBuffer frameNumberLineBuffer = new StringBuffer();
+		StringBuffer markLineBuffer = new StringBuffer();
+		StringBuffer horizontalRuleBuffer = new StringBuffer();
+		StringBuffer scoreLineBuffer = new StringBuffer();
+		frameNumberLineBuffer.append(VERTICAL_SEPARATOR);
+
+		markLineBuffer.append(VERTICAL_SEPARATOR);
+		horizontalRuleBuffer.append(VERTICAL_SEPARATOR);
+		scoreLineBuffer.append(VERTICAL_SEPARATOR);
+
+		for(int frameNumber = 1; frameNumber <= 9; frameNumber++)
+		{
+			frameNumberLineBuffer.append("  " + frameNumber + "  ");
+			markLineBuffer.append(" ");
+			markLineBuffer.append(getMark(frameNumber, 1));
+			markLineBuffer.append(LEFT_EDGE_OF_SMALL_SQUARE);
+			markLineBuffer.append(getMark(frameNumber, 2));
+			markLineBuffer.append(RIGHT_EDGE_OF_SMALL_SQUARE);
+
+			final int CHARACTER_WIDTH_SCORE_AREA = 5;
+			for(int i = 0; i < CHARACTER_WIDTH_SCORE_AREA; i++) horizontalRuleBuffer.append(HORIZONTAL_SEPARATOR);
+			if(isGameOver() || frameNumber < getCurrentFrame())
+			{
+				int score = getScore(frameNumber);
+				final int PADDING_NEEDED_BEHIND_SCORE = 1;
+				final int PADDING_NEEDED_IN_FRONT_OF_SCORE = CHARACTER_WIDTH_SCORE_AREA - ("" + score).length() - PADDING_NEEDED_BEHIND_SCORE;
+				for(int i = 0; i < PADDING_NEEDED_IN_FRONT_OF_SCORE; i++) scoreLineBuffer.append(" ");
+				scoreLineBuffer.append(score);
+				for(int i = 0; i < PADDING_NEEDED_BEHIND_SCORE; i++) scoreLineBuffer.append(" ");
+			}
+			else
+			{
+				for(int i = 0; i < CHARACTER_WIDTH_SCORE_AREA; i++) scoreLineBuffer.append(" ");
+			}
+
+			frameNumberLineBuffer.append(VERTICAL_SEPARATOR);
+			markLineBuffer.append(VERTICAL_SEPARATOR);
+			horizontalRuleBuffer.append(VERTICAL_SEPARATOR);
+			scoreLineBuffer.append(VERTICAL_SEPARATOR);
+		}
+		//Frame 10:
+		{
+			final String THREE_SPACES = "   ";
+			frameNumberLineBuffer.append(THREE_SPACES + 10 + THREE_SPACES);
+
+			markLineBuffer.append(" ");
+			markLineBuffer.append(getMark(10, 1));
+			markLineBuffer.append(LEFT_EDGE_OF_SMALL_SQUARE);
+			markLineBuffer.append(getMark(10, 2));
+			markLineBuffer.append(RIGHT_EDGE_OF_SMALL_SQUARE);
+			markLineBuffer.append(LEFT_EDGE_OF_SMALL_SQUARE);
+			markLineBuffer.append(getMark(10, 3));
+			markLineBuffer.append(RIGHT_EDGE_OF_SMALL_SQUARE);
+
+			final int CHARACTER_WIDTH_SCORE_AREA = 8;
+			for(int i = 0; i < CHARACTER_WIDTH_SCORE_AREA; i++) horizontalRuleBuffer.append(HORIZONTAL_SEPARATOR);
+			if(isGameOver())
+			{
+				int score = getScore(10);
+				final int PADDING_NEEDED_BEHIND_SCORE = 1;
+				final int PADDING_NEEDED_IN_FRONT_OF_SCORE = CHARACTER_WIDTH_SCORE_AREA - ("" + score).length() - PADDING_NEEDED_BEHIND_SCORE;
+				for(int i = 0; i < PADDING_NEEDED_IN_FRONT_OF_SCORE; i++) scoreLineBuffer.append(" ");
+				scoreLineBuffer.append(score);
+				for(int i = 0; i < PADDING_NEEDED_BEHIND_SCORE; i++) scoreLineBuffer.append(" ");
+			}
+			else
+			{
+				for(int i = 0; i < CHARACTER_WIDTH_SCORE_AREA; i++) scoreLineBuffer.append(" ");
+			}
+
+			frameNumberLineBuffer.append(VERTICAL_SEPARATOR);
+			markLineBuffer.append(VERTICAL_SEPARATOR);
+			horizontalRuleBuffer.append(VERTICAL_SEPARATOR);
+			scoreLineBuffer.append(VERTICAL_SEPARATOR);
+		}
+
+		return 	getPlayerName() + "\n" +
+		horizontalRuleBuffer.toString() + "\n" +
+		frameNumberLineBuffer.toString() + "\n" +
+		horizontalRuleBuffer.toString() + "\n" +
+		markLineBuffer.toString() + "\n" +
+		scoreLineBuffer.toString() + "\n" +
+		horizontalRuleBuffer.toString();
+	}
+
+	public String toString()
+	{
+		return getScoreboardDisplay();
+	}
+
+	private int getRollIndexOfFirstBall(int frameNumber)
+	{
+		int currentIndex=0;
+
+		currentIndex=((frameNumber*2)-2);
+
+		return currentIndex;
+	}
+
+	private boolean isStrike(int frameNumber)
+	{
+		boolean isStrike=false;
+		
+		
+		if(!isSpare(frameNumber)){}
+		
+		throw new RuntimeException("NOT IMPLEMENTED!");
+
+	}
+
+	private boolean isSpare(int frameNumber)
+	{
+		boolean isSpare=false;
+		int pinSum;
+		pinSum=pinsKnockedDownArray[(frameNumber*2)-2];
+		pinSum=pinSum+pinsKnockedDownArray[(frameNumber*2)-1];
+
+		if(pinSum==10)
+		{
+			isSpare=true;
+		}
+		
+		return isSpare;
+	}
+
+	private boolean isStrikeOrSpare(Mark mark)
+	{
+		return ((mark == Mark.STRIKE) || (mark == Mark.SPARE));
+	}
+
+
+	private int getArrayIndexOfFirstBall(int frameNumber)
+	{
+		throw new RuntimeException("NOT IMPLEMENTED!");
+	}
+
+
+
+	//*************************************************
+	//*************************************************
+	//*************************************************
+	//*********ASSIGNMENT METADATA STUFF***************
+	public String getFirstNameOfSubmitter() 
+	{
+		String firstName="Baron";
+		return firstName;
+	}
+
+	public String getLastNameOfSubmitter() 
+	{
+		String lastName="Heinrich";
+		return lastName;
+	}
+
+	public double getHoursSpentWorkingOnThisAssignment()
+	{
+		double hours= 18;
+		return hours;
+	}
+
+	public int getScoreAgainstTestCasesSubset()
+	{
+		int score=18;
+		return score;
+	}
+}

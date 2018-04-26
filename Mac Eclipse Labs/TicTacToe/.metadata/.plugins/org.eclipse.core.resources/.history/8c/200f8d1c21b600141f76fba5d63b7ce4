@@ -1,0 +1,26 @@
+package tictactoe;
+
+import static org.junit.Assert.*;
+import org.junit.Before;
+import org.junit.Test;
+import tictactoe.*;
+
+public class TicTacToeBoardTests_Heinrich {
+
+	private TicTacToeBoard b1;
+	@Before
+	public void setup() 
+	{
+		
+		TicTacToeBoard b1 = new TicTacToeBoardImpl_Heinrich();
+	}
+	
+	public void test()
+	{
+		assertEquals( Mark.X , b1.getTurn());
+		
+		assertEquals(Mark.O, b1.getTurn());
+		
+	}
+	
+}

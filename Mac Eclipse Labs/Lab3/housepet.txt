@@ -1,0 +1,56 @@
+534
+Luis Francisco
+Chihuahua
+5.6
+409
+sport
+dog
+3
+893
+fluffy
+cat 
+4.5
+307
+lucy lu
+parrot
+22.5
+764
+smiley
+snake
+2.1
+200
+lewis
+chihuahua
+5.6
+934
+maddie
+great pyrenees
+15.1
+904
+tater tot
+big dog
+4.8
+111
+spot
+dog
+4.5
+222
+tiger
+cat
+10.0
+333
+billy
+goat
+2.5
+444
+sammy
+gerbil
+.33
+555
+rascal
+parrot
+15.2
+666
+dory
+fish
+2.5

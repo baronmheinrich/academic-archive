@@ -1,0 +1,57 @@
+package tictactoe;
+
+import static org.junit.Assert.*;
+import tictactoe.*;
+import org.junit.BeforeClass;
+import org.junit.Before;
+import org.junit.Test;
+
+public class TicTacToeBoardTests_Heinrich 
+{
+
+//	private TicTacToeBoard b1;
+	TicTacToeBoard b1 = new TicTacToeBoardImpl_Heinrich();
+	TicTacToeBoard b2 = new TicTacToeBoardImpl_Heinrich();
+	
+	@Before
+	public void setUpBefore() throws Exception 
+	{
+		
+	}
+
+	@Test
+	public void test() 
+	{
+		System.out.println("Checking for proper board order");
+		System.out.println("First instance of getTurn: "+ b1.getTurn());
+		assertEquals(Mark.X, b1.getTurn());
+		b1.setMark(0,0);
+		
+		System.out.println("Second instance of getTurn: "+ b1.getTurn());
+		assertEquals(Mark.O, b1.getTurn());
+		b1.setMark(1,0);
+		
+		System.out.println("Third instance of getTurn: "+ b1.getTurn());
+		assertEquals(Mark.X, b1.getTurn());
+		b1.setMark(2,0);
+		
+		System.out.println("Fourth instance of getTurn: "+ b1.getTurn());
+		assertEquals(Mark.O, b1.getTurn());
+		b1.setMark(2,1);
+		
+		System.out.println("Fifth instance of getTurn: "+ b1.getTurn());
+		assertEquals(Mark.X, b1.getTurn());
+		b1.setMark(2,2);
+		
+		System.out.println("Sixth instance of getTurn: "+ b1.getTurn());
+		assertEquals(Mark.O, b1.getTurn());
+		b1.setMark(1,1);
+		
+		System.out.println("Fifth instance of getTurn: "+ b1.getTurn());
+		assertEquals(Mark.X, b1.getTurn());
+		b1.setMark(1,2);
+	}
+	
+	
+
+}

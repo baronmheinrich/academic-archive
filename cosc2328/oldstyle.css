@@ -1,0 +1,85 @@
+
+
+/* Generic Selectors */
+
+body {
+
+margin:  0 5%;
+
+font-family: verdana, Georgia, arial, helvetica, sans-serif;
+
+font-size: 1em;  /* default size */
+
+color: #333333;  /* text color */
+
+background: #eeeeee; /* background color */
+
+}
+
+.heading {
+      background:#D2F1FF;
+      color: #000; 
+      padding: 1%;
+      margin: 1% 13% 1% 13%;
+      padding: 2%;
+      text-align:center;
+}
+#navBar
+{
+    background:#399;
+    text-align:center;
+    display: block;
+
+}
+
+
+.content {
+    background: #FFF6D2;
+    color:black;
+    margin: 1% 13% 1% 13%;
+    padding: 2%;
+    overflow:auto;
+}
+
+.border { 
+          margin: 5% 2%;
+          border: 5px dashed black;
+          padding: 5% 2%;
+          overflow:auto;
+          text-align:center;
+  }
+
+.floatleft {
+        width: 40%;
+	padding:2%;
+	float:left;
+      }
+.clear {
+       clear:both;
+       }
+
+.footer{
+        font-size:.8em;
+	margin:5% 1% 1% 1%;
+  /*border-style: solid;
+        border-width: thin;
+        border-color:white;
+*/
+	border-top: 1px solid white;
+        padding:1%;
+        
+}
+/* now change anchor tag colors */
+a:link { 
+         color: blue;
+    }
+a:visited { 
+            color:orange;
+          }
+a:hover { background:white;
+          color:#333000;
+        }
+.strike
+{
+    text-decoration:line-through;
+}

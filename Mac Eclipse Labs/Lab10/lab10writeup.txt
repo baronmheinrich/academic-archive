@@ -1,0 +1,586 @@
+**********************************************************************************************************************
+Baron Heinrich
+COSC 2125/2325
+Lab 10
+05/01/14
+**********************************************************************************************************************
+
+**********************************************************************************************************************
+QueueFrame.java
+**********************************************************************************************************************
+package lab10;
+
+import java.awt.FlowLayout;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
+
+import java.awt.*;
+import java.awt.event.*;
+import java.util.Scanner;
+
+import javax.swing.*;
+
+
+public class QueueFrame<T> extends JFrame
+{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	public static final int FRAMEWIDTH=700;
+	public static final int FRAMEHEIGHT=500;
+	JButton add; 
+	JButton remove;
+	JButton clear;
+	JButton change;
+	JButton full;
+	JButton empty;
+	JButton first;
+	JButton last;
+	JButton show;
+	JButton size;
+	JButton maxSize;
+
+	QueueList <String> queue;
+
+	JTextArea area;
+	JTextField field;
+	JPanel buttonPanel;
+	JPanel buttonPanel2;
+
+	//pre: n/a
+	//post: frame constructor
+	public QueueFrame()
+	{
+		add = new JButton("Add");
+		remove = new JButton("Remove");
+		clear = new JButton ("Clear");
+		change = new JButton ("Change Size");
+		full = new JButton("Full?");
+		empty = new JButton("Empty?");
+		first = new JButton("First?");
+		last = new JButton("Last?");
+		show = new JButton("Show Queue");
+		size = new JButton("Size");
+		maxSize= new JButton("Max Size");
+		queue= new QueueListImpl<String>();
+
+		field = new JTextField(18);
+		area = new JTextArea(10,50);
+
+
+		buttonPanel = new JPanel();
+		buttonPanel2=new JPanel();
+		// used to keep the buttons together
+		// button Panel 2 used as a seperate row
+		this.setTitle("Queue Testing");
+		this.getContentPane().setLayout(new FlowLayout());
+		this.getContentPane().add(buttonPanel);
+		this.getContentPane().add(buttonPanel2);
+		this.getContentPane().add(area);
+		buttonPanel.add(add);
+		buttonPanel.add(remove);
+		buttonPanel.add(clear);
+		buttonPanel.add(size);
+		buttonPanel.add(maxSize);
+		buttonPanel.add(change);
+		buttonPanel2.add(full);
+		buttonPanel2.add(empty);
+		buttonPanel2.add(show);
+		buttonPanel2.add(first);
+		buttonPanel2.add(last);
+
+		area.setEditable(false);
+
+		//listeners below
+		add.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				doAdd();
+			}});
+
+		maxSize.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				area.setText("The max elements you can add to the current queue is " + queue.getMaxSize());
+			}});
+
+
+		size.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				doSize();
+			}});
+		show.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				area.setText(queue.toString());
+			}});
+
+		change.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				doChange();
+			}});
+
+
+		remove.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+
+				if(!queue.isEmpty())
+				{
+					String item=queue.remove();
+					area.setText("Just removed " + item + " from the queue.");
+				}
+				else
+				{
+					area.setText("Could not remove item from the queue...");
+				}
+			}});
+
+		first.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+
+				if(queue.isEmpty())
+				{
+					area.setText("Could not get the front item...");
+				}
+				else
+				{
+					area.setText("The first item in the queue is " + queue.front());
+				}
+			}});
+
+		last.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+
+				if(queue.isEmpty())
+				{
+					area.setText("Could not get the last item...");
+				}
+				else
+				{
+					area.setText("The last item in the queue is " + queue.last());
+				}
+			}});
+
+		clear.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				queue.clear();
+				area.setText("Queue cleared.");
+			}});
+
+		empty.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+
+				if(queue.isEmpty())
+				{
+					area.setText("Queue is empty");
+				}
+				else
+				{
+					area.setText("Queue has some items in it...");
+				}
+			}});
+
+		full.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+
+				if(queue.isFull())
+				{
+					area.setText("Queue is full");
+				}
+				else
+				{
+					area.setText("Queue has some room in it...");
+				}
+			}});
+
+	}
+
+	//do methods below
+	public void doAdd()
+	{
+		String item = JOptionPane.showInputDialog(this, "Enter value to push", "");
+		if(!queue.isFull())
+		{
+			queue.add(item);
+			area.setText("Just added " + item + " into the queue\n");
+		}
+		else
+		{
+			area.setText("Cannot add into queue, its currently full at : "+queue.size()+
+					" items\n\nContents of queue is: \n"+queue);
+		}
+	}
+
+	public void doSize()
+	{
+		int currentSize=queue.size();
+		area.setText("The current size of the queue is: "+ currentSize);
+	}
+	public void doChange()
+	{
+		String item = JOptionPane.showInputDialog(this, "Enter value: ", "");
+		int userInput=Integer.parseInt(item);
+
+		queue.setMaxSize(userInput);
+		area.setText("Changed number of elements");
+	}
+
+	public static void main(String[] args) {
+		//Schedule a job for the event-dispatching thread:
+		//creating and showing this application's GUI.
+		javax.swing.SwingUtilities.invokeLater(new Runnable() {
+			public void run() {
+				createAndShowGUI();
+			}
+		});
+	}
+	private static void createAndShowGUI() {
+		//Make sure we have nice window decorations so use default for system
+		JFrame.setDefaultLookAndFeelDecorated(true);    
+
+		//Create and set up the window.
+		QueueFrame<String> frame = new QueueFrame<String>();
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setSize(QueueFrame.FRAMEWIDTH, QueueFrame.FRAMEHEIGHT);
+		//Display the window.
+		frame.setVisible(true);
+
+	}
+}
+
+
+**********************************************************************************************************************
+QueueListImpl.java
+**********************************************************************************************************************
+package lab10;
+
+public class QueueListImpl<T> implements QueueList<T> 
+{
+	private int count;
+	private Node<T> first;
+	private Node<T> last;
+	private int MAX_SIZE;
+
+	//pre: n/a
+	//post: default constructor
+	public QueueListImpl()
+	{
+		this.count=0;
+		this.first=null;
+		this.last=null;
+		this.MAX_SIZE=5;
+	}
+
+	//pre: n/a
+	//post: returns boolean value if list is empty or not
+	public boolean isEmpty()
+	{
+		if(this.size()==0)
+		{
+			return true;
+		}
+		else
+			return false;
+	}
+
+	//pre: n/a
+	//post: returns boolean if list is full or not
+	public boolean isFull() 
+	{
+		if(this.size()==5)
+		{
+			return true;
+		}
+		else
+			return false;
+	}
+
+	//pre: n/a
+	//post: returns count
+	public int size() 
+	{
+		return count;
+	}
+
+	//pre:n/a
+	//post: returns maximium size of list
+	public int getMaxSize() 
+	{
+		return MAX_SIZE;
+	}
+
+
+	/** sets max allowable elements in this Queue
+	 * truncates queue (at tail or rear) if max allowable is
+	 *  less than current size of this Queue
+	 *  @param - newSize - max allowable elements to set max to.
+	 */
+	//pre: newSize
+	//post: sets Max size
+	public void setMaxSize(int newSize) 
+	{
+	
+
+		if(newSize<count)
+		{
+			Node <T> previous = null;
+			Node <T> current =this.first;
+			for(int i=0; i<newSize; i++)
+			{
+				previous=current;
+				current=current.link;
+			}
+			
+			this.last=previous;
+			this.last.data=previous.data;
+			this.last.link=null;
+			current=null;
+			
+		
+			this.count=newSize;
+			this.MAX_SIZE=newSize;
+		}
+		else
+		{
+			this.MAX_SIZE=newSize;
+		}
+	}
+
+
+	/** places item at the end (rear or tail) of this Queue
+	 *  inserts item at end of this Queue returns true if room to add
+	 *  false if this queue is full.  
+	 *@param element - item to be inserted at rear of this Queue
+	 *@return - true if add is successful, false otherwise
+	 */
+	//pre: T elements
+	//adds element to queue if queue is not full
+	public boolean add(T element)
+	{
+		if(this.isFull())
+		{
+			throw new RuntimeException();
+		}
+		Node<T> node = new Node<T>();
+		node.data=element;
+
+		if(this.isEmpty())
+		{
+			this.first=node;
+			this.last=node;
+			count ++;
+		}
+
+		else
+		{
+			this.last.link=node;
+			this.last=node;
+			this.count++;
+		}
+
+		return true;
+	}
+
+	//pre: n/a
+	//post: removes item from queue if it's not full
+	public T remove()
+	{
+		if(this.isEmpty())
+		{
+			throw new RuntimeException();
+		}
+
+		T item=this.first.data;
+		this.first=this.first.link;
+		if(this.first==null)
+		{
+			this.last=null;
+			this.count --;
+		}
+		return item;
+	}
+
+	//pre: n/a
+	//post: returns the first T thing in the queue
+	public T front() 
+	{
+		if(this.isEmpty())
+		{
+			throw new RuntimeException();
+		}
+		else
+			return this.first.data;
+	}
+
+	//pre: n/a
+	//post: returns last T thing in the queue
+	public T last() 
+	{
+		if(this.isEmpty())
+		{
+			throw new RuntimeException();
+		}
+
+		else
+		{
+			return this.last.data;
+		}
+	}
+
+	//pre: n/a
+	//post: clears the list by setting private values to defaults
+	public void clear()
+	{
+		this.first=null;
+		this.last=null;
+		this.count=0;
+		this.MAX_SIZE=5;
+	}
+
+	//pre: n/a
+	//post: returns a string of the list
+	public String toString()
+	{
+		String empty="";
+		String blank="";
+
+		if(this.isEmpty())
+		{
+			empty="Empty queue...";
+			return empty;
+		}
+		else
+		{
+			Node <T> current =this.first;
+			for(int i=0; i<getMaxSize(); i++)
+			{
+				blank=blank+current.data +"\n";
+				current=current.link;
+
+			}
+			return blank;
+		}
+	}
+
+}
+
+**********************************************************************************************************************
+QueueList.java
+**********************************************************************************************************************
+
+package lab10;
+
+public interface QueueList <T>
+{
+	/** tests to see if the Queue has 0 elements
+	 *@ return true if the Queue is empty (has 0 elements) false otherwise;
+	 */
+	public boolean isEmpty();
+
+	/** tests to see if the Queue size() has reached max size, if so return
+	 * true, return false if no max set or size is not at max if set.
+	 * @return - true if max reached, false otherwise
+	 */
+	public boolean isFull();
+
+
+	/** returns number of elements currently in this Queue
+	 *@return - number of elements in list (always <= maxElements)
+	 */
+	public int size();
+
+	/** returns max allowable elements in this Queue.
+	 *@return - maximum number of elements allowed in queue
+	 */
+	public int getMaxSize();
+
+	/** sets max allowable elements in this Queue
+	 * truncates queue (at tail or rear) if max allowable is
+	 *  less than current size of this Queue
+	 *  @param - newSize - max allowable elements to set max to.
+	 */
+	public void setMaxSize(int newSize); 
+
+	/** places item at the end (rear or tail) of this Queue
+	 *  inserts item at end of this Queue returns true if room to add
+	 *  false if this queue is full.  
+	 *@param element - item to be inserted at rear of this Queue
+	 *@return - true if add is successful, false otherwise
+	 */
+	public boolean add(T element);
+
+	/** removes head (first) item from this Queue if this Queue is
+	 * not empty. 
+	 * @throws - a RuntimeException on an empty queue 
+	 * @return - Object that is removed if Queue is not empty.
+	 *
+	 */
+	public T remove(); 
+
+	/** returns head (first) item from this Queue if this Queue is
+	 * not empty. 
+	 * @throws - RuntimeException if Queue is empty
+	 * @return - Object that is at the front of this queue, does NOT remove it.
+	 */
+	public T front();
+
+
+	/** returns tail (last) item from this Queue if this Queue is
+	 * not empty. 
+	 * @throws - RuntimeException if Queue is empty
+	 * @return - Object that is at the front of this queue, does NOT remove it.
+	 */
+	public T last();
+
+	/** removes all items from this Queue, making it empty.
+	 */
+	public void clear();
+	
+	//creates a string of all items in the queue
+	public String toString();
+
+}
+
+**********************************************************************************************************************
+Node.java
+**********************************************************************************************************************
+
+package lab10;
+
+import lab10.Node;
+
+public class Node<T>
+{
+
+    public T data; 
+    public Node<T> link;
+
+    //default constructor 
+    public Node()
+	{
+	    this.data = null;
+	    this.link = null;
+	}//end of constructor
+
+    public Node(T theData)
+	{
+	    this.data = theData;
+	    this.link = null;
+	}
+
+    public Node(Node<T> theLink)
+	{
+	    this.data = null;
+	    this.link = theLink;
+	}
+
+    public Node(T theData, Node<T> theLink)
+	{
+	    this.data = theData;
+	    this.link = theLink;
+	}
+
+}//End of Node<T> public class. 

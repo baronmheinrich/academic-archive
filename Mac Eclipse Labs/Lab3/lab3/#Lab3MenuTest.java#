@@ -1,0 +1,118 @@
+package lab3;
+
+import java.util.Scanner;
+
+//the test class for the menu driven program
+public class Lab3MenuTest
+{
+ // the main method that starts everything
+ public static void main(String args[] )
+ {
+    HousePet myList = new HousePet();  
+               // create a list of HousePet objects
+    char option = '$';
+    do
+    {
+      displayMenuToUser(); // show menu options to user 
+      option = getUserSelection();  // get user's option
+      switch(option)
+      {
+      case 'a': menuAdd((HousePetList) myList);
+                  break;
+        case 'b': menuRemove(myList);
+                  break;
+        case 'c': menuSearch(myList);
+                  break;
+        case 'd': populateList(myList);
+                  break;
+        case 'x': exitMessage();
+      } // end switch
+    }
+    while( option !='x') ;
+  } // end main
+
+
+  private static void exitMessage()
+  {
+	
+  }
+
+    //populates list from user supplied file
+  private static void populateList(HousePet myList) 
+  {
+      //1. create a scanner with system.in
+      //then ask user for name of file to read from
+      //2. try to open and or creat  a scanner from that file name
+      //3. if it can open the scanner call read from scanner
+      //myList.readFromScanner(inFile)
+      //if unsucessful, return a error message and go back to the main menu
+
+  }
+
+  private static void menuSearch(HousePet myList) 
+  {
+		
+  }
+
+  private static void menuRemove(HousePet myList) 
+  {
+		
+  }
+
+  private static void displayMenuToUser() 
+  {
+		
+  }
+
+/** gets information for item to be added to the list
+      and then calls the add method to attempt to add item
+      reports whether or not add was successful.
+    @param myList - the BankAccountList object that we will add the new
+            item to 
+ */
+  public static void menuAdd(HousePetList myList)
+  {
+     Scanner input = new Scanner(System.in);
+     HousePet housepet = new HousePet(); 
+     // create object to be added
+     System.out.println("enter data for your house pet: ");
+     housepet.readFromScanner(input);  //  read in data for Account
+     boolean result = myList.add(housepet);  // call the add method of add
+     if (result) // if we got back a true from add
+       System.out.println(housepet + " was added successfully to the list");
+     else
+       System.out.println(housepet + " was NOT added to the list. ");
+     return;
+   } // end MenuAdd
+
+/** prompts the user for a menu selection
+    reads and verifies selection, returns only
+    a valid selection, loops until a valid selection is given
+   @return - the valid selection as input
+*/
+public static char getUserSelection ()
+{  
+   char choice;
+   String answer; // holds the user's selection
+   Scanner input = new Scanner (System.in);
+   
+  do {
+   System.out.print("Enter your selection: ");
+   answer = input.nextLine();
+   choice = Character.toLowerCase(answer.charAt(0));
+  } while ( choice !='x' && choice !='a' && choice !='b' &&
+            choice !='c' && choice !='d'); 
+     // assuming a-d are good and x is quit (modify as needed for options) 
+ return choice;
+} 
+
+} // end MenuTest class
+
+
+
+
+
+
+
+
+

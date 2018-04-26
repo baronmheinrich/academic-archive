@@ -1,0 +1,71 @@
+<?php
+require "classfun.php";
+printDocHeading("oldstyle.css","PHP FUN I SUPPOSE");
+
+print
+
+"<body>"."\n".
+"<div class='heading'>" ."\n".
+"<h2>Good Boy Baron's cosc2328 Home Page</h2>" . "\n" .
+"</div>" . "\n" .
+"<div class='content'>" . "\n".
+"<!--  float left starts here -->" . "\n" .
+
+"<div class='floatleft'>" . "\n" .
+"<h3> My major </h3>". "\n" .
+   "Computer Science" . "\n".
+   "<h5>Irrelevant Minor</h5>" . "\n" .
+  "<div class='strike'>Graphic Design</div>" . "\n" .
+
+" <h4> My hobbies </h4>" . "\n". 
+"<ul>" . "\n". 
+"<li> Dota 2 </li>" . "\n". 
+"<li> Power napping </li>" . "\n" .
+"<li> nervously laughing </li>" . "\n".
+"<li> going on dates with my imaginary boyfriend </li>" . "\n".
+"</ul>" . "\n".
+
+"<h6> Some helpful links: </h6>" . "\n".
+ "<a href='http://validator.w3.org'> html validator </a>" . "\n" .
+ "<br /><br />" . "\n" .
+ "<a href='http://w3schools.com/html/default.asp'> html reference </a>" . "\n" .
+ "<br /><br />".
+ "<a href='http://w3schools.com/css/default.asp'> css reference </a>" . "\n". 
+ "<br /><br />" . "\n".
+ "<a href='http://myweb.stedwards.edu/laurab/cosc2328/'> cosc 2328</a>" . "\n".
+ "<br /> <br />" . "\n".
+ "<a href='http://designshack.net/articles/css/create-seamless-web-background-textures-in-minutes/'> creating repeatable backgrounds in Photoshop</a>" . "\n" .
+   "<br /> <br />". "\n".
+  "<a href='http://www.mamp.info/en/'> Test PHP pages locally</a>". "\n".
+  
+"</div>" . "\n".
+"<!--  end of float left  -->"."\n".
+"<!--  start new float left  -->". "\n".
+"<div class='floatleft'>"."\n".
+ " <div class='border'> " . "\n" .
+ " <br />" . "\n".
+    "tea, super husbands, and protein powder" . "\n" .
+  "<br />" . "\n" .
+     "<img src='images/mesmall.jpg' alt='tea, super husbands, and protein powder' />" . "\n".
+
+  "</div>" . "\n" .
+   
+  "<div class='floatleft'>" . "\n".
+  " <h4>Assignments</h4>" . "\n".
+  "</div>" . "\n".
+"</div>" . "\n".
+"<!--  end of float left  -->" . "\n".
+"<div class='clear'></div>" . "\n".
+"<p class='footer'>" . "\n".
+ "St. Edward&apos;s University .:. cosc 2328 - web programming .:. fall 2014". "\n".
+"</p>" . "\n" .
+
+"</div>". "\n" .
+"<!--  end of content  -->" . "\n" .
+"</body>" . "\n" .
+"</html>" . "\n"
+
+;
+
+
+?>

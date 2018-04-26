@@ -1,0 +1,14 @@
+here is a number 111-111-1111  and another one, 2223334444.
+On this line is a number (555)888-9999.  A second number 999.888.777 with yet
+another number 777.333.0000 to go with the one before.
+(444)777-2222.
+more numbers and more after that:
+9999999999
+888.888.8888
+(777)   888-   3333
+   111  -    222 - 9828
+512-222-3333
+several more options 888+333+0000  should not work.
+Nor should 333#444#5555.  !!! (5-2)88-3)
+8888333-333-22-2902390309 should not work either
+

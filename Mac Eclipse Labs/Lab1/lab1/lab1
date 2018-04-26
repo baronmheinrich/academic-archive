@@ -1,0 +1,255 @@
+/********
+Name: Baron Heinrich
+Date: 01/21/14
+Class: Tues/Thurs 11:00-12:15
+Lab: Tues 3:30-4:45
+*********/
+
+
+HousePet Class...
+~~~~~~~~~~~~~~~~~
+
+package lab1;
+
+import java.util.Scanner;
+
+public class HousePet 
+{
+	private int theChipId;
+	private String theName;
+	private String thePetType;
+	private double theAge;
+	
+	// default constructor, creates a default HousePet instance
+    // with chipId as 0, name as "**no name**", petType as "**no type**", 
+    // and age as 0.0.
+	public HousePet()
+	{
+		theChipId=0;
+		theName="**No Name**";
+		thePetType="**no type**";
+		theAge=0.0;
+	}
+	
+	//pre: Receives data to initialize constructor
+	//post: creates house pet with given data
+	public HousePet(int theChipId, String theName,  String thePetType, double theAge)
+	{
+		this.theChipId=theChipId;
+		this.theName=theName;
+		this.thePetType=thePetType;
+		this.theAge=theAge;
+		
+		//following if statements check the data
+		//if any of the data is invalid, makes the field the default
+		if(theChipId<0)
+		    {
+			theChipId=0;
+		    }
+		
+		if(theName.length()==0)
+		    {
+			theName="**No Name**";
+		    }
+		
+		if(thePetType.length()==0)
+		    {
+			thePetType="**no type**";
+		    }
+		
+		if(theAge<0.0)
+		    {
+			theAge=0.0;
+		    }
+		
+	}
+	    // creates a HousePet instance with the given data, if any is invalid
+	    // puts default value into field ( invalid data is a negative chipId or
+	    //  negative age)
+	
+	//pre: none
+	//post: returns ChipId Value
+	public int getChipId()
+	{
+		return theChipId;
+	} // returns this house pet's chipId
+	
+	//pre: none
+	//post: returns the name
+	public String getName()
+	{
+		return theName;
+	} // returns name of this house pet
+	
+	//pre: none
+	//post: returns Pet Type
+	public String getPetType()
+	{
+		return thePetType;
+	} // returns the petType of this house pet
+	
+	//pre: none
+	//Post: returns age value
+	public double getAge()
+	{
+		return theAge;
+		
+	} // returns the age of this house pet
+	
+	//pre: chip ID value
+	//post: sets chip ID value to given chip ID, 0 if invalid
+	public void setChipId(int theChipId)
+	{
+		this.theChipId=theChipId;
+		
+		if(theChipId<0)
+	    {
+		this.theChipId=0;
+	    }
+	
+	} // sets this HousePet's chipId to given number
+	    // or to 0 if invalid chipId given
+	
+	//pre: theName String
+	//post: sets given string as name, returns no name if invalid
+	public void setName(String theName)
+	{
+		this.theName=theName;
+		if(theName.length()==0)
+	    {
+		this.theName="**No Name**";
+	    }
+	}
+	//sets this HousePet's name to theName, if 
+	// theName is blank, then uses default value
+	
+	//pre: thePetType string
+	//post: sets the inputed string as the Pet Type
+	public void setPetType(String thePetType)
+	{
+		this.thePetType=thePetType;
+		
+		if(thePetType.length()==0)
+	    {
+		this.thePetType="**no type**";
+	    }
+	}  //sets this HousePet's type to given type
+	   // if thePetType is blank, then uses default value
+	
+	//pre: theAge double value
+	//post: sets the inputed value, returns 0.0 if invalid
+	public void setAge(double theAge)
+	{
+		this.theAge=theAge;
+		
+		if(theAge<0.0)
+	    {
+		this.theAge=0.0;
+	    }
+	} // sets this HousePet's age to the given age
+	
+	//pre: none
+	//post: returns readable string from setters
+	public String toString()
+	{
+		String output="Your pet's chip ID is "+theChipId+". Your pet's name is "+theName+". Your pet is a "+ thePetType+". Your pet is "+theAge+" years old.";
+		return output;
+	} // returns a readable string 
+	                // of this HousePet as ONE line of understandable text
+	
+	//pre: scanner
+	//post: returns true and sets data if all the data in the document is correct
+	public boolean readFromScanner(Scanner inputSource)
+	{
+	    int aChipId=0;
+	    String aName="";
+	    String aType="";
+	    double aAge=0.0;
+
+	    if(inputSource.hasNext())
+		{
+		    aChipId=inputSource.nextInt();
+		    inputSource.nextLine();
+		
+		    if(inputSource.hasNext())
+			{
+			    aName=inputSource.next();
+			    
+			    if(inputSource.hasNext())
+				{
+				    aType=inputSource.next();
+				    
+				    if(inputSource.hasNext())
+					{
+					    aAge=inputSource.nextDouble();
+					    this.theAge=aAge;
+					    this.theName=aName;
+					    this.thePetType=aType;
+					    this.theChipId=aChipId;
+					    return true;
+					}//end of Double
+				    return false;
+				}// end of aType
+			    return false;
+			}//end of if input Source
+		    return false;
+		}// end of if next
+	    
+	    else
+	    	return false;	
+	} 
+}
+
+	// tries to read and store data
+	// from inputSource (on 4 lines of input as previously described, 1 piece of
+	// data on each line in order described above) 
+	// returns true on success(all data found), 
+	// if unsuccessful, sets all 4 values to default values, skips past 4 lines of input
+	// and then returns false
+	
+	
+~~~~~~~~~
+
+Script...
+
+~~~~~~~~~
+
+Just created 3 house pets: 
+First HousePet: Your pet's chip ID is 0. Your pet's name is **No Name**. Your pet is a **no type**. Your pet is 0.0 years old.
+Second HousePet: Your pet's chip ID is 4566. Your pet's name is Susie. Your pet is a dog. Your pet is 3.67 years old.
+Third HousePet: Your pet's chip ID is -1. Your pet's name is . Your pet is a . Your pet is -1.0 years old.
+
+Now testing mutators on HousePet hp1: 
+
+Here is hp1 (should be: 111, Sport, dog, 0.5) 
+Your pet's chip ID is 111. Your pet's name is Sport. Your pet is a Dog. Your pet is 0.5 years old.
+Now testing accessors
+ hp1 name: Sport hp1 chipId: 111 hp1 age: 0.5 hp1 pet type: Dog
+Here is modified HousePet hp2  after setting using values (-999, Silly Kitty, cat, -1.0)
+Your pet's chip ID is 0. Your pet's name is Silly Kitty. Your pet is a cat. Your pet is 0.0 years old.
+Now testing accessors on HousePet hp2
+name: Silly Kitty  chipId: 0  age: 0.0 pet type: cat
+Here is modified HousePet hp3 changed to  (id-11199, age - 2.5, name-Quacker Backer, pet type: Duck
+Your pet's chip ID is 11199. Your pet's name is Quacker Backer. Your pet is a Duck. Your pet is 2.5 years old.
+Now testing accessors on HousePet hp3
+name: Quacker Backer  chip Id: 11199 age: 2.5 pet type: Duck
+Now testing the readFromScanner method...
+ Please enter data for your pet, 1 item per line Chip Id <enter> name <enter> pet type <enter> age <enter> 88
+Debbie
+Unicorn
+100
+Here is the house pet's data just read: 
+Your pet's chip ID is 88. Your pet's name is Debbie. Your pet is a Unicorn. Your pet is 100.0 years old.
+Now testing invalid data, setting  last pet to Joe
+Here is the house pet with invalid data 
+Your pet's chip ID is 0. Your pet's name is Some Bad House Pet Data. Your pet is a Silly Pet. Your pet is 0.0 years old.
+Now reading HousePets from a data file
+Attempting to open file, 'housepet.txt'
+just read pet data: Your pet's chip ID is 111. Your pet's name is spot. Your pet is a dog. Your pet is 4.5 years old. from file. 
+just read pet data: Your pet's chip ID is 222. Your pet's name is tiger. Your pet is a cat. Your pet is 10.0 years old. from file. 
+just read pet data: Your pet's chip ID is 333. Your pet's name is billy. Your pet is a goat. Your pet is 2.5 years old. from file. 
+just read pet data: Your pet's chip ID is 444. Your pet's name is sammy. Your pet is a gerbil. Your pet is 0.33 years old. from file. 
+just read pet data: Your pet's chip ID is 555. Your pet's name is rascal. Your pet is a parrot. Your pet is 15.2 years old. from file. 
+just read pet data: Your pet's chip ID is 666. Your pet's name is dory. Your pet is a fish. Your pet is 2.5 years old. from file. 
+found end of file...done reading.
+*** End of HousePetTest ***

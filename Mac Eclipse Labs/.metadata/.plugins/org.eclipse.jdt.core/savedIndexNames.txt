@@ -1,0 +1,6 @@
+INDEX VERSION 1.126+/Users/baron/Documents/Mac Eclipse Labs/.metadata/.plugins/org.eclipse.jdt.core
+3405057566.index
+1070312845.index
+988692565.index
+363497591.index
+4067826494.index

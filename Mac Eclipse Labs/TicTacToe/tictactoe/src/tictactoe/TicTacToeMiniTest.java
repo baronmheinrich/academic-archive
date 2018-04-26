@@ -1,0 +1,40 @@
+package tictactoe;
+
+public class TicTacToeMiniTest 
+{
+
+	public static void main(String[] args) 
+	{
+		TicTacToeBoard b1= new TicTacToeBoardImpl_Heinrich();
+		
+
+		System.out.println("this is the first instance of get turn:" + b1.getTurn());
+		
+		b1.setMark(0,0); //x
+		System.out.println("this is the second instance of get turn:" + b1.getTurn());
+
+		System.out.println("this is get mark at (0,0) it should be an X:" + b1.getMark(0,0));
+//		b1.setMark(0,1); //o
+//		b1.setMark(0,2); //x
+//		b1.setMark(1,1); //o
+//		b1.setMark(1,0); //x
+//		b1.setMark(1, 2); //o
+//		b1.setMark(2,1); //x
+//		b1.setMark(2,0); //o
+//		b1.setMark(2, 2);//x
+		
+		//b1.setMark(2,2); //should fail
+		
+		//b1.setMark(1,2);
+		//b1.setMark(2,2);
+		//b1.setMark(2,2);
+		System.out.println("winner: " + b1.getWinner());
+		System.out.println("Is the game over? " + b1.isGameOver());
+		//b1.setMark(2,1);
+		
+		System.out.println(b1.toString());
+
+
+	}
+
+}
